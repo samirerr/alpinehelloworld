@@ -7,7 +7,7 @@ pipeline {
      }
      agent none
      stages {
-         stage('Build image') {
+         stage('Builder  l image') {
              agent any
              steps {
                 script {
@@ -15,7 +15,7 @@ pipeline {
                 }
              }
         }
-        stage('Run container based on builded image') {
+        stage('Demarrer l image') {
             agent any
             steps {
                script {
@@ -26,7 +26,7 @@ pipeline {
                }
             }
        }
-       stage('Test image') {
+       stage('Tester l image') {
            agent any
            steps {
               script {
@@ -36,7 +36,7 @@ pipeline {
               }
            }
       }
-      stage('Clean Container') {
+      stage('nettoyer le Container') {
           agent any
           steps {
              script {
@@ -47,7 +47,7 @@ pipeline {
              }
           }
      }
-     stage('Push image in staging and deploy it') {
+     stage('Pusher l image et la deployer') {
        when {
               expression { GIT_BRANCH == 'origin/master' }
             }
@@ -66,24 +66,6 @@ pipeline {
           }
         }
      }
-     stage('Push image in production and deploy it') {
-       when {
-              expression { GIT_BRANCH == 'origin/master' }
-            }
-      agent any
-      environment {
-          HEROKU_API_KEY = credentials('heroku_api_key')
-      }  
-      steps {
-          script {
-            sh '''
-              heroku container:login
-              heroku create $PRODUCTION || echo "project already exist"
-              heroku container:push -a $PRODUCTION web
-              heroku container:release -a $PRODUCTION web
-            '''
-          }
-        }
-     }
+     
   }
 }
