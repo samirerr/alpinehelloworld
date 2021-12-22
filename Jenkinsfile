@@ -47,7 +47,7 @@ pipeline {
              }
           }
      }
-     stage('Pusher l image et la deployer') {
+     stage('Pusher l image dans le stagging et la deployer') {
        when {
               expression { GIT_BRANCH == 'origin/master' }
             }
@@ -66,6 +66,24 @@ pipeline {
           }
         }
      }
-     
+     stage('Pusher l image dans la Prod et la deployer') {
+       when {
+              expression { GIT_BRANCH == 'origin/master' }
+            }
+      agent any
+      environment {
+          HEROKU_API_KEY = credentials('heroku_api_key')
+      }  
+      steps {
+          script {
+            sh '''
+              heroku container:login
+              heroku create $PRODUCTION || echo "project already exist"
+              heroku container:push -a $PRODUCTION web
+              heroku container:release -a $PRODUCTION web
+            '''
+          }
+        }
+     }
   }
 }
