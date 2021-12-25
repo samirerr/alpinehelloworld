@@ -3,6 +3,6 @@
 
 ![Build Status](http://192.168.1.51:8080/buildStatus/icon?job=D%C3%A9ploiement)]
 
-![This is an image](https://myoctocat.com/assets/images/base-octocat.svg)
+![This is an image](http://192.168.1.51:8080/job/D%C3%A9ploiement/badge/icon)
 
 
